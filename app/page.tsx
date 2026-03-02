@@ -1,11 +1,7 @@
 import Gallery from "@/components/Gallery"
 import GenderToggle from "@/components/GenderToggle"
 
-type Props = {
-  searchParams: Promise<{
-    gender?: string
-  }>
-}
+type Props = { searchParams: Promise<{gender?: string}>}
 
 export default async function Home({ searchParams }: Props) {
   
