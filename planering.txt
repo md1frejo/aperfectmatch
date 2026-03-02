@@ -1,0 +1,17 @@
+Dating sida
+
+mathning av kandidat till ett urval av män eller kvinnor
+
+api: bilder på man/kvinna kommer från ...
+
+sidan består av bilder från 
+
+projektplanering
+
+gör logiken först sedan css sedan test
+
+logik: implementera en matchning algoritm, kunna läsa in nya medlemmar osv
+
+css: ska vara attraktiv design
+
+test: test av matchningen att den funkar
