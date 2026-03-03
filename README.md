@@ -34,3 +34,9 @@ details:
 This is the roadmap for this project
 
 ![image_info](./roadmap.png)
+
+##backlog:
+
+create components: getpicture, upload profile, criteria selector, selecting algorithm
+create testing suite: stable algorithm testing
+create all css and grid system for all pictures
