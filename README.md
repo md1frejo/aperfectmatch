@@ -30,3 +30,7 @@ details:
 
 4: the overaill css should be made with tailwind and as an example of the final result is   an example below
    ![image info](./hero-couple.jpg)
+
+This is the roadmap for this project
+
+![image_info](./roadmap.png)
