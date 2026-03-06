@@ -4,13 +4,13 @@ type Props = {
 
 export function PresentationText({ text = [] }: Props) {
 
-  return (
-    <>
+  return ( 
+     <div className="bg-blue-100">
       {text.map((line, i) => (
-        <p key={i} className="mt-2 text-sm text-black">
+        <p key={i} className="mt-2 text-black w-full text-2xl">
           {line}
         </p>
       ))}
-    </>
+    </div>
   )
 }
