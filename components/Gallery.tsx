@@ -13,20 +13,11 @@ type Photo = {
   }
 }
 
-export default function Gallery({
-  photos,
-  gender,
-}: {
-  photos: Photo[]
-  gender: string[]
-}) {
+export default function Gallery({photos,gender,}: {photos: Photo[], gender: string[]}) {
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
 
-  const [customProfiles, setCustomProfiles] = useState<{
-    image: string
-    text: string
-  }[]>([])
+  const [customProfiles, setCustomProfiles] = useState<{image: string,text: string }[]>([])
 
   const handleCreate = (profile: { image: string; text: string }) => {
     setCustomProfiles((prev) => [profile, ...prev])
@@ -34,7 +25,6 @@ export default function Gallery({
 
   const totalImages = photos.length
 
-  // keyboard controls
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       if (selectedIndex === null) return

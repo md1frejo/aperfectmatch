@@ -4,7 +4,7 @@ export function gdatetext(mf: string): string[] {
   const fnames = ["Anna","Pia","Linda","Maria","Lena","Nina"]
   const want1 = ["någon rik","någon fattig","någon smart","någon dum","någon snäll","någon elak"]
   const iam = ["snygg","ful","sportig","lat","intelligent","korkad","snäll","elak","beräknande","kaotisk"]
-  const promise = ["lycka","elände","erotik","klass","ordning","kaos"]
+  const promise = ["lycka","elände","erotik","kyskhet","rikedom","fattigdom","ordning","kaos"]
 
   let name: string
   const presentation: string[] = []

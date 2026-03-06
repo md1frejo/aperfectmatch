@@ -51,6 +51,8 @@ export default async function Home({ searchParams }: Props) {
     const womenPhotos = women.results
 
     photos = [...menPhotos, ...womenPhotos]
+    photos = photos.sort(() => Math.random() - 0.5)
+
 
     genderl = [...Array(menPhotos.length).fill("men"),...Array(womenPhotos.length).fill("women")]
   }
