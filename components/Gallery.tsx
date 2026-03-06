@@ -13,16 +13,11 @@ type Photo = {
   }
 }
 
-export default function Gallery({
-  photos,
-  gender,
-}: {
+export default function Gallery({photos,gender,}: {
   photos: Photo[]
-  gender: string
+  gender: string[]
 }) {
-  const [customProfiles, setCustomProfiles] = useState<
-    { image: string; text: string }[]
-  >([])
+  const [customProfiles, setCustomProfiles] = useState<{ image: string; text: string }[]>([])
 
   const handleCreate = (profile: { image: string; text: string }) => {
     setCustomProfiles((prev) => [profile, ...prev])
@@ -32,23 +27,18 @@ export default function Gallery({
     <>
       <CreateNew onCreate={handleCreate} />
 
-      <div className="grid grid-cols-3 gap-4">
-        {/* Custom created profiles */}
+      <div className="grid grid-cols-6 gap-4">
         {customProfiles.map((profile, index) => (
-          <div key={"custom-" + index} className="flex flex-col">
+          <div key={"custom-" + index} className="flex flex-col w-full h-auto">
             <img src={profile.image} className="rounded" />
             <PresentationText text={profile.text} />
           </div>
         ))}
 
-        {photos.map((photo) => (
-          <div key={photo.id} className="flex flex-col">
-            <img
-              src={photo.urls.small}
-              alt={photo.alt_description ?? ""}
-              className="rounded"
-            />
-            <PresentationText text={gdatetext(gender)} />
+        {photos.map((photo,key) => (
+          <div key={photo.id} className="flex flex-col w-full h-auto">
+            <img src={photo.urls.small} alt={photo.alt_description ?? ""} className="rounded" />
+            <PresentationText text={gdatetext(gender[key])} />
           </div>
         ))}
       </div>
