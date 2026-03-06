@@ -17,6 +17,7 @@ export default function Gallery({photos,gender,}: {
   photos: Photo[]
   gender: string[]
 }) {
+
   const [customProfiles, setCustomProfiles] = useState<{ image: string; text: string }[]>([])
 
   const handleCreate = (profile: { image: string; text: string }) => {

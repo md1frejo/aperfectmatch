@@ -52,19 +52,15 @@ export default async function Home({ searchParams }: Props) {
 
     photos = [...menPhotos, ...womenPhotos]
 
-    genderl = [
-      ...Array(menPhotos.length).fill("men"),
-      ...Array(womenPhotos.length).fill("women")
-    ]
+    genderl = [...Array(menPhotos.length).fill("men"),...Array(womenPhotos.length).fill("women")]
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-7xl flex-col items-center py-16 px-8 bg-white dark:bg-black">
+	<main className="flex min-h-screen w-[90%] mx-auto flex-col items-center py-16 px-4 bg-white dark:bg-black">
+        	<GenderToggle current={gender} />
 
-        <GenderToggle current={gender} />
-
-        <Gallery photos={photos} gender={genderl} />
+        	<Gallery photos={photos} gender={genderl} />
 
       </main>
     </div>

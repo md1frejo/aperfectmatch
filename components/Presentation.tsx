@@ -1,22 +1,16 @@
 type Props = {
-  text: string | null
+  text?: string[] 
 }
 
-export function PresentationText({ text }: Props) {
-  const ptext: string = text ?? "nothing"
-
-  const summary: string[] = []
-  const parts = ptext.split(".")
-
-  summary.push(parts[0])
-  summary.push(parts[1])
-  summary.push(parts[2])
+export function PresentationText({ text = [] }: Props) {
 
   return (
     <>
-    <p className="mt-2 text-sm text-black">{summary[0]}</p>
-    <p className="mt-2 text-sm text-black">{summary[1]}</p>
-    <p className="mt-2 text-sm text-black">{summary[2]}</p>
+      {text.map((line, i) => (
+        <p key={i} className="mt-2 text-sm text-black">
+          {line}
+        </p>
+      ))}
     </>
   )
 }
