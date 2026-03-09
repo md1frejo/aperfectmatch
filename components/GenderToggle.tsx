@@ -19,6 +19,17 @@ export default function GenderToggle({ current }: { current: string }) {
       <button
         onClick={() => setGender("mix")}
         className={`px-4 py-2 rounded ${
+          current === "add"
+            ? "bg-black text-white"
+            : "bg-zinc-200 dark:bg-zinc-700"
+        }`}
+      >
+        Add
+      </button>
+
+      <button
+        onClick={() => setGender("mix")}
+        className={`px-4 py-2 rounded ${
           current === "mix"
             ? "bg-black text-white"
             : "bg-zinc-200 dark:bg-zinc-700"
