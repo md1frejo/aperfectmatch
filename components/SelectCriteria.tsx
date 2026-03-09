@@ -22,7 +22,7 @@ export default function SelectCrit() {
     { title: "Jag söker ...", data: attributes[1] },
     { title: "Jag kan ge dig ...", data: attributes[2] }
   ]
-console.log(attributes)
+
   return (
     <div className="grid grid-cols-3 gap-8">
 

@@ -113,7 +113,7 @@ export default function Gallery({
             onClick={(e) => e.stopPropagation()}
           />
 
-          <div className="bg-white p-4 rounded mt-4 max-w-md text-center">
+          <div className="bg-grey-400 p-4 rounded mt-4 max-w-md text-center">
             <PresentationText text={gdatetext(gender[selectedIndex])[0]} />
           </div>
 

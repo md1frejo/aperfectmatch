@@ -23,7 +23,7 @@ export default function CreateNew({ onCreate }: CreateNewProps) {
   }
 
   return (
-    <div className="flex flex-row justify-center items-center gap-8 bg-blue-100">	  
+    <div className="flex flex-row justify-center items-center gap-8 bg-sky-100/50">	  
       <SelectCrit selected={selected} setSelected={setSelected} />
 
       <div className="mb-8 p-4 border rounded">

@@ -1,5 +1,6 @@
 import Gallery from "@/components/Gallery"
 import GenderToggle from "@/components/GenderToggle"
+import selection from "@/lib/Choosepicture"
 
 type Props = { searchParams: Promise<{ gender?: string }> }
 
@@ -59,14 +60,18 @@ export default async function Home({ searchParams }: Props) {
     genderl = items.map(i => i.gender)
   }
 
+  const selectedTraits = ["snäll", "sportig"] 
+
+  const chosenPhoto = selection(photos, ["snäll"])
+  console.log("fdsfdfdsds ",chosenPhoto)
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
-      <main className="flex min-h-screen w-[90%] mx-auto flex-col items-center py-16 px-4 bg-white dark:bg-black">
+      <main className="flex min-h-screen w-[90%] mx-auto flex-col items-center py-16 px-4 bg-sky-100/50 dark:bg-black">
 
         <GenderToggle current={gender} />
 
         <Gallery photos={photos} gender={genderl} />
-
       </main>
     </div>
   )
