@@ -50,23 +50,24 @@ export default async function Home({ searchParams }: Props) {
     const menPhotos = men.results
     const womenPhotos = women.results
 
-    photos = [...menPhotos, ...womenPhotos]
-    photos = photos.sort(() => Math.random() - 0.5)
+    const items = [
+      ...menPhotos.map((p: any) => ({ photo: p, gender: "men" })),
+      ...womenPhotos.map((p: any) => ({ photo: p, gender: "women" })),
+    ].sort(() => Math.random() - 0.5)
 
-
-    genderl = [...Array(menPhotos.length).fill("men"),...Array(womenPhotos.length).fill("women")]
+    photos = items.map(i => i.photo)
+    genderl = items.map(i => i.gender)
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
-	<main className="flex min-h-screen w-[90%] mx-auto flex-col items-center py-16 px-4 bg-white dark:bg-black">
-        	<GenderToggle current={gender} />
+      <main className="flex min-h-screen w-[90%] mx-auto flex-col items-center py-16 px-4 bg-white dark:bg-black">
 
-        	<Gallery photos={photos} gender={genderl} />
+        <GenderToggle current={gender} />
+
+        <Gallery photos={photos} gender={genderl} />
 
       </main>
     </div>
   )
 }
-
-

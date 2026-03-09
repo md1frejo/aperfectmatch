@@ -21,6 +21,9 @@ export function gdatetext(mf: string): string[] {
   presentation.push("Jag söker " + want1[Math.floor(Math.random() * want1.length)]) 
   presentation.push("jag vill att du är " + iam[Math.floor(Math.random() * iam.length)])
   presentation.push("jag kommer ge dig " + promise[Math.floor(Math.random() * promise.length)]) 
+  presentation.push(iam)
+  presentation.push(want1)
+  presentation.push(promise)
 
   return presentation
 }
