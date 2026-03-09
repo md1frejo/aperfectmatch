@@ -5,6 +5,12 @@ import { PresentationText } from "./Presentation"
 import { gdatetext } from "@/lib/GenerateText"
 import CreateNew from "./CreateNew"
 
+type Props = {
+  photos: any[]
+  gender: string[]
+  chosen?: any
+}
+
 type Photo = {
   id: string
   alt_description: string | null

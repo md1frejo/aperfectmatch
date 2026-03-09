@@ -68,9 +68,12 @@ export default async function Home({ searchParams }: Props) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
       <main className="flex min-h-screen w-[90%] mx-auto flex-col items-center py-16 px-4 bg-sky-100/50 dark:bg-black">
-
-        <GenderToggle current={gender} />
-
+ 	<div className="flex justify-center items-center mb-16">
+  		<h1 className="text-8xl text-red-800 font-serif italic">
+    			Sudden attraction
+  		</h1>
+	</div> 
+	<GenderToggle current={gender} />
         <Gallery photos={photos} gender={genderl} />
       </main>
     </div>

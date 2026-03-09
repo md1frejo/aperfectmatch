@@ -26,7 +26,7 @@ export default function CreateNew({ onCreate }: CreateNewProps) {
     <div className="flex flex-row justify-center items-center gap-8 bg-sky-100/50">	  
       <SelectCrit selected={selected} setSelected={setSelected} />
 
-      <div className="mb-8 p-4 border rounded">
+      <div className="w-100 mb-8 p-4 border rounded">
         <LoadPicture onImageChange={setImage} />
 
         <textarea
