@@ -1,4 +1,4 @@
-export function gdatetext(mf: string): string[] {
+export function gdatetext(mf: string): [string[], string[]] {
 
   const mnames = ["Adam","Nils","Johan","Mikael","Peter","Viktor"]
   const fnames = ["Anna","Pia","Linda","Maria","Lena","Nina"]
@@ -8,6 +8,7 @@ export function gdatetext(mf: string): string[] {
 
   let name: string
   const presentation: string[] = []
+  const attributes: string[] = []
 
   if (mf === "men") {
     name = mnames[Math.floor(Math.random() * mnames.length)]
@@ -21,9 +22,9 @@ export function gdatetext(mf: string): string[] {
   presentation.push("Jag söker " + want1[Math.floor(Math.random() * want1.length)]) 
   presentation.push("jag vill att du är " + iam[Math.floor(Math.random() * iam.length)])
   presentation.push("och jag kommer ge dig " + promise[Math.floor(Math.random() * promise.length)]) 
-  presentation.push(iam)
-  presentation.push(want1)
-  presentation.push(promise)
+  attributes.push(iam)
+  attributes.push(want1)
+  attributes.push(promise)
 
-  return presentation
+  return [presentation,attributes]
 }

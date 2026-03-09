@@ -94,7 +94,7 @@ export default function Gallery({
               onClick={() => setSelectedIndex(index)}
             />
 
-            <PresentationText text={gdatetext(gender[index])} />
+            <PresentationText text={gdatetext(gender[index])[0]} />
 
           </div>
         ))}
@@ -114,7 +114,7 @@ export default function Gallery({
           />
 
           <div className="bg-white p-4 rounded mt-4 max-w-md text-center">
-            <PresentationText text={gdatetext(gender[selectedIndex])} />
+            <PresentationText text={gdatetext(gender[selectedIndex])[0]} />
           </div>
 
           <button
