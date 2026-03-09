@@ -30,7 +30,7 @@ export default function CreateNew({ onCreate }: CreateNewProps) {
         <LoadPicture onImageChange={setImage} />
 
         <textarea
-          placeholder="Write something about yourself..."
+          placeholder="berätta om dig själv ..."
           value={text.join("\n")}
           onChange={(e) => setText(e.target.value.split("\n"))}
           className="w-full p-2 border rounded mb-2"
@@ -40,7 +40,7 @@ export default function CreateNew({ onCreate }: CreateNewProps) {
           onClick={handleSubmit}
           className="bg-black text-white px-4 py-2 rounded"
         >
-          Create Profile
+          skapa profil
         </button>
       </div>
     </div>

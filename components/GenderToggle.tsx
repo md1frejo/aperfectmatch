@@ -24,7 +24,7 @@ export default function GenderToggle({ current }: { current: string }) {
             : "bg-zinc-200 dark:bg-zinc-700"
         }`}
       >
-        Add
+        Registrera
       </button>
 
       <button
@@ -46,7 +46,7 @@ export default function GenderToggle({ current }: { current: string }) {
             : "bg-zinc-200 dark:bg-zinc-700"
         }`}
       >
-        Women
+        Kvinnor
       </button>
 
       <button
@@ -57,7 +57,7 @@ export default function GenderToggle({ current }: { current: string }) {
             : "bg-zinc-200 dark:bg-zinc-700"
         }`}
       >
-        Men
+        Män
       </button>
 
     </div>
