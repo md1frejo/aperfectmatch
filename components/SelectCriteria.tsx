@@ -18,7 +18,7 @@ export default function SelectCrit() {
   const chara = gdatetext("men")
 
   const groups = [
-    { title: "Välj dina egenskaper", data: chara[6] },
+    { title: "jag är...", data: chara[6] },
     { title: "Jag söker ...", data: chara[7] },
     { title: "Jag kan ge dig ...", data: chara[8] }
   ]
