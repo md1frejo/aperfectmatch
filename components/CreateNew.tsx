@@ -12,7 +12,7 @@ export default function CreateNew({ onCreate }: CreateNewProps) {
 
   const [image, setImage] = useState("")
   const [text, setText] = useState<string[]>([])
-
+  const [selected, setSelected] = useState<string[]>([])
   const handleSubmit = () => {
 
     if (!image || text.length === 0) return
@@ -24,7 +24,7 @@ export default function CreateNew({ onCreate }: CreateNewProps) {
 
   return (
     <div className="flex flex-row justify-center items-center gap-8 bg-blue-100">	  
-      <SelectCrit />
+      <SelectCrit selected={selected} setSelected={setSelected} />
 
       <div className="mb-8 p-4 border rounded">
         <LoadPicture onImageChange={setImage} />
