@@ -1,27 +1,26 @@
 "use client"
 
-import { useRouter, useSearchParams } from "next/navigation"
+type Props = {
+  activated: boolean
+  setActivated: (v: boolean) => void
+}
 
-export default function GenderToggle({ current }: { current: string }) {
-
-  const router = useRouter()
-  const searchParams = useSearchParams()
+export default function GenderToggle({ activated, setActivated }: Props) {
 
   const setGender = (gender: string) => {
-    const params = new URLSearchParams(searchParams.toString())
+    // Update the URL and reload the page to fetch correct photos
+    const params = new URLSearchParams(window.location.search)
     params.set("gender", gender)
-    router.push(`/?${params.toString()}`)
+    window.location.href = `/?${params.toString()}`
   }
 
   return (
     <div className="flex gap-4 mb-8">
 
       <button
-        onClick={() => setGender("mix")}
+        onClick={() => setActivated(!activated)}
         className={`px-4 py-2 rounded ${
-          current === "add"
-            ? "bg-black text-white"
-            : "bg-zinc-200 dark:bg-zinc-700"
+          activated ? "bg-black text-white" : "bg-zinc-200 dark:bg-zinc-700"
         }`}
       >
         Registrera
@@ -30,7 +29,7 @@ export default function GenderToggle({ current }: { current: string }) {
       <button
         onClick={() => setGender("mix")}
         className={`px-4 py-2 rounded ${
-          current === "mix"
+          new URLSearchParams(window.location.search).get("gender") === "mix"
             ? "bg-black text-white"
             : "bg-zinc-200 dark:bg-zinc-700"
         }`}
@@ -41,7 +40,7 @@ export default function GenderToggle({ current }: { current: string }) {
       <button
         onClick={() => setGender("women")}
         className={`px-4 py-2 rounded ${
-          current === "women"
+          new URLSearchParams(window.location.search).get("gender") === "women"
             ? "bg-black text-white"
             : "bg-zinc-200 dark:bg-zinc-700"
         }`}
@@ -52,7 +51,7 @@ export default function GenderToggle({ current }: { current: string }) {
       <button
         onClick={() => setGender("men")}
         className={`px-4 py-2 rounded ${
-          current === "men"
+          new URLSearchParams(window.location.search).get("gender") === "men"
             ? "bg-black text-white"
             : "bg-zinc-200 dark:bg-zinc-700"
         }`}
@@ -63,3 +62,5 @@ export default function GenderToggle({ current }: { current: string }) {
     </div>
   )
 }
+
+

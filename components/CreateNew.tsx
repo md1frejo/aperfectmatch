@@ -17,7 +17,7 @@ export default function CreateNew({ onCreate }: CreateNewProps) {
 
     if (!image || text.length === 0) return
 
-    onCreate({ image, text })
+    onCreate({image,text })
     setImage("")
     setText([])
   }
@@ -33,13 +33,11 @@ export default function CreateNew({ onCreate }: CreateNewProps) {
           placeholder="berätta om dig själv ..."
           value={text.join("\n")}
           onChange={(e) => setText(e.target.value.split("\n"))}
-          className="w-full p-2 border rounded mb-2"
-        />
+          className="w-full p-2 border rounded mb-2"/>
 
         <button
           onClick={handleSubmit}
-          className="bg-black text-white px-4 py-2 rounded"
-        >
+          className="bg-black text-white px-4 py-2 rounded">
           skapa profil
         </button>
       </div>

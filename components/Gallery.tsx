@@ -6,151 +6,128 @@ import { gdatetext } from "@/lib/GenerateText"
 import CreateNew from "./CreateNew"
 
 type Props = {
-  photos: any[]
-  gender: string[]
-  chosen?: any
+photos: any[]
+gender: string[]
+activated: boolean
 }
 
-type Photo = {
-  id: string
-  alt_description: string | null
-  urls: {
-    small: string
-  }
+type GalleryItem = {
+image: string
+text: string[]
 }
 
-export default function Gallery({
-  photos,
-  gender,
-}: {
-  photos: Photo[]
-  gender: string[]
-}) {
+export default function Gallery({ photos, gender, activated }: Props) {
 
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+const [customProfiles, setCustomProfiles] = useState<GalleryItem[]>([])
 
-  const [customProfiles, setCustomProfiles] = useState<
-    { image: string; text: string }[]
-  >([])
+const handleCreate = (profile: GalleryItem) => {
+setCustomProfiles((prev) => [profile, ...prev])
+}
 
-  const handleCreate = (profile: { image: string; text: string }) => {
-    setCustomProfiles((prev) => [profile, ...prev])
+const apiProfiles: GalleryItem[] = photos.map((photo, i) => ({
+image: photo.urls.small,
+text: gdatetext(gender[i])[0],
+}))
+
+const allProfiles: GalleryItem[] = [...customProfiles, ...apiProfiles]
+const totalImages = allProfiles.length
+
+useEffect(() => {
+
+function handleKey(e: KeyboardEvent) {
+
+  if (selectedIndex === null) return
+
+  if (e.key === "Escape") {
+    setSelectedIndex(null)
   }
 
-  const totalImages = photos.length
+  if (e.key === "ArrowRight") {
+    setSelectedIndex((prev) =>
+      prev !== null ? (prev + 1) % totalImages : null
+    )
+  }
 
-  useEffect(() => {
-    function handleKey(e: KeyboardEvent) {
+  if (e.key === "ArrowLeft") {
+    setSelectedIndex((prev) =>
+      prev !== null ? (prev - 1 + totalImages) % totalImages : null
+    )
+  }
 
-      if (selectedIndex === null) return
+}
 
-      if (e.key === "Escape") {
-        setSelectedIndex(null)
-      }
+window.addEventListener("keydown", handleKey)
+return () => window.removeEventListener("keydown", handleKey)
+}, [selectedIndex, totalImages])
 
-      if (e.key === "ArrowRight") {
-        setSelectedIndex((prev) =>
-          prev !== null ? (prev + 1) % totalImages : null
-        )
-      }
+return (
+<>
 
-      if (e.key === "ArrowLeft") {
-        setSelectedIndex((prev) =>
-          prev !== null ? (prev - 1 + totalImages) % totalImages : null
-        )
-      }
-    }
+{activated && (
+  <div className="mb-8">
+    <CreateNew onCreate={handleCreate} />
+  </div>
+)}
 
-    window.addEventListener("keydown", handleKey)
 
-    return () => {
-      window.removeEventListener("keydown", handleKey)
-    }
+  <div className="grid grid-cols-6 gap-4">
 
-  }, [selectedIndex, totalImages])
+    {allProfiles.map((profile, index) => (
+      <div key={index} className="flex flex-col w-full">
 
-  return (
-    <>
+        <img
+          src={profile.image}
+          className="rounded cursor-pointer hover:scale-105 transition"
+          onClick={() => setSelectedIndex(index)}
+        />
 
-      <CreateNew onCreate={handleCreate} />
-
-      <div className="grid grid-cols-6 gap-4">
-
-        {customProfiles.map((profile, index) => (
-          <div key={"custom-" + index} className="flex flex-col w-full">
-
-            <img
-              src={profile.image}
-              className="rounded cursor-pointer hover:scale-105 transition"
-              onClick={() => setSelectedIndex(index)}
-            />
-
-            <PresentationText text={profile.text} />
-
-          </div>
-        ))}
-
-        {photos.map((photo, index) => (
-          <div key={photo.id} className="flex flex-col w-full">
-
-            <img
-              src={photo.urls.small}
-              alt={photo.alt_description ?? ""}
-              className="rounded cursor-pointer hover:scale-105 transition"
-              onClick={() => setSelectedIndex(index)}
-            />
-
-            <PresentationText text={gdatetext(gender[index])[0]} />
-
-          </div>
-        ))}
+        <PresentationText text={profile.text} />
 
       </div>
+    ))}
 
-      {selectedIndex !== null && (
-        <div
-          className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50"
-          onClick={() => setSelectedIndex(null)}
-        >
+  </div>
 
-          <img
-            src={photos[selectedIndex].urls.small}
-            className="max-w-[90%] max-h-[70%] rounded-lg"
-            onClick={(e) => e.stopPropagation()}
-          />
+  {selectedIndex !== null && (
+    <div
+      className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50"
+      onClick={() => setSelectedIndex(null)}
+    >
 
-          <div className="bg-grey-400 p-4 rounded mt-4 max-w-md text-center">
-            <PresentationText text={gdatetext(gender[selectedIndex])[0]} />
-          </div>
+      <img
+        src={allProfiles[selectedIndex].image}
+        className="max-w-[90%] max-h-[70%] rounded-lg"
+        onClick={(e) => e.stopPropagation()}
+      />
 
-          <button
-            className="absolute left-6 text-white text-4xl"
-            onClick={(e) => {
-              e.stopPropagation()
-              setSelectedIndex(
-                (selectedIndex - 1 + totalImages) % totalImages
-              )
-            }}
-          >
-            ←
-          </button>
+      <div className="bg-gray-800 text-white p-4 rounded mt-4 max-w-md text-center">
+        <PresentationText text={allProfiles[selectedIndex].text} />
+      </div>
 
-          <button
-            className="absolute right-6 text-white text-4xl"
-            onClick={(e) => {
-              e.stopPropagation()
-              setSelectedIndex(
-                (selectedIndex + 1) % totalImages
-              )
-            }}
-          >
-            →
-          </button>
+      <button
+        className="absolute left-6 text-white text-4xl"
+        onClick={(e) => {
+          e.stopPropagation()
+          setSelectedIndex((selectedIndex - 1 + totalImages) % totalImages)
+        }}
+      >
+        ←
+      </button>
 
-        </div>
-      )}
+      <button
+        className="absolute right-6 text-white text-4xl"
+        onClick={(e) => {
+          e.stopPropagation()
+          setSelectedIndex((selectedIndex + 1) % totalImages)
+        }}
+      >
+        →
+      </button>
 
-    </>
-  )
+    </div>
+  )}
+
+</>
+)
 }
-
