@@ -1,57 +1,140 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { PresentationText } from "./Presentation"
 import { gdatetext } from "@/lib/GenerateText"
 import CreateNew from "./CreateNew"
 
-type Photo = {
-  id: string
-  alt_description: string | null
-  urls: {
-    small: string
-  }
+type Props = {
+photos: any[]
+gender: string[]
+activated: boolean
+onMatch: (selected: string[]) => void
 }
 
-export default function Gallery({
-  photos,
-  gender,
-}: {
-  photos: Photo[]
-  gender: string
-}) {
-  const [customProfiles, setCustomProfiles] = useState<
-    { image: string; text: string }[]
-  >([])
+type GalleryItem = {
+image: string
+text: string[]
+}
 
-  const handleCreate = (profile: { image: string; text: string }) => {
-    setCustomProfiles((prev) => [profile, ...prev])
+export default function Gallery({ photos, gender, activated, onMatch }: Props) {
+
+const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+const [customProfiles, setCustomProfiles] = useState<GalleryItem[]>([])
+
+const handleCreate = (profile: GalleryItem) => {
+setCustomProfiles((prev) => [profile, ...prev])
+}
+
+const apiProfiles: GalleryItem[] = photos.map((photo, i) => ({
+image: photo.urls.small,
+text: gdatetext(gender[i])[0],
+}))
+
+const allProfiles: GalleryItem[] = [...customProfiles, ...apiProfiles]
+const totalImages = allProfiles.length
+
+useEffect(() => {
+
+function handleKey(e: KeyboardEvent) {
+
+  if (selectedIndex === null) return
+
+  if (e.key === "Escape") {
+    setSelectedIndex(null)
   }
 
-  return (
-    <>
-      <CreateNew onCreate={handleCreate} />
+  if (e.key === "ArrowRight") {
+    setSelectedIndex((prev) =>
+      prev !== null ? (prev + 1) % totalImages : null
+    )
+  }
 
-      <div className="grid grid-cols-3 gap-4">
-        {/* Custom created profiles */}
-        {customProfiles.map((profile, index) => (
-          <div key={"custom-" + index} className="flex flex-col">
-            <img src={profile.image} className="rounded" />
-            <PresentationText text={profile.text} />
-          </div>
-        ))}
+  if (e.key === "ArrowLeft") {
+    setSelectedIndex((prev) =>
+      prev !== null ? (prev - 1 + totalImages) % totalImages : null
+    )
+  }
 
-        {photos.map((photo) => (
-          <div key={photo.id} className="flex flex-col">
-            <img
-              src={photo.urls.small}
-              alt={photo.alt_description ?? ""}
-              className="rounded"
-            />
-            <PresentationText text={gdatetext(gender)} />
-          </div>
-        ))}
+}
+console.log("Gallery photos:", photos.length)
+window.addEventListener("keydown", handleKey)
+return () => window.removeEventListener("keydown", handleKey)
+}, [selectedIndex, totalImages])
+
+return (
+<>
+
+{activated && (
+  <div className="mb-8">
+
+  <CreateNew
+  photos={photos}
+  onCreate={handleCreate}
+  onMatch={onMatch}
+/> 
+
+</div>
+)}
+
+
+  <div className="grid grid-cols-6 gap-4">
+
+    {allProfiles.map((profile, index) => (
+      <div key={index} className="flex flex-col w-full">
+
+        <img
+          src={profile.image}
+          className="rounded cursor-pointer hover:scale-105 transition"
+          onClick={() => setSelectedIndex(index)}
+        />
+
+        <PresentationText text={profile.text} />
+
       </div>
-    </>
-  )
+    ))}
+
+  </div>
+
+  {selectedIndex !== null && (
+    <div
+      className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50"
+      onClick={() => setSelectedIndex(null)}
+    >
+
+      <img
+        src={allProfiles[selectedIndex].image}
+        className="max-w-[90%] max-h-[70%] rounded-lg"
+        onClick={(e) => e.stopPropagation()}
+      />
+
+      <div className="bg-gray-800 text-white p-4 rounded mt-4 max-w-md text-center">
+        <PresentationText text={allProfiles[selectedIndex].text} />
+      </div>
+
+      <button
+        className="absolute left-6 text-white text-4xl"
+        onClick={(e) => {
+          e.stopPropagation()
+          setSelectedIndex((selectedIndex - 1 + totalImages) % totalImages)
+        }}
+      >
+        ←
+      </button>
+
+      <button
+        className="absolute right-6 text-white text-4xl"
+        onClick={(e) => {
+          e.stopPropagation()
+          setSelectedIndex((selectedIndex + 1) % totalImages)
+        }}
+      >
+        →
+      </button>
+
+    </div>
+  )}
+
+</>
+)
 }

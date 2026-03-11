@@ -1,11 +1,25 @@
- type Props = {
-  text: string | null
+type Props = {
+  text?: unknown
 }
 
 export function PresentationText({ text }: Props) {
+
+  let lines: string[] = []
+
+  if (typeof text === "string") {
+    lines = [text]
+  } else if (Array.isArray(text)) {
+    lines = text.filter((v): v is string => typeof v === "string")
+  }
+
+  console.log("PresentationText text:", text)
   return (
-    <p className="mt-2 text-4xl text-sm text-zinc-600 dark:text-zinc-400">
-    {text ?? "no description available"}
-    </p>
+    <div className="bg-sky-200/50">
+      {lines.map((line, i) => (
+        <p key={i} className="mt-2 text-blue w-full text-xl">
+          {line}
+        </p>
+      ))}
+    </div>
   )
 }
