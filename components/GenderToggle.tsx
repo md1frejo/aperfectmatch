@@ -22,7 +22,7 @@ export default function GenderToggle({ gender, setGender, activated, setActivate
       </button>
 
       <button onClick={() => setActivated(!activated)} className={`px-4 py-2 rounded ${activated ? "bg-black text-white" : "bg-zinc-200 dark:bg-zinc-700"}`}>
-        Registrera
+        Registrera och matcha
       </button>
 
       <button

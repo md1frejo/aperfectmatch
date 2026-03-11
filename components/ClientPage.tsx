@@ -12,29 +12,29 @@ type Props = {
 }
 
 export default function ClientPage({ photos, genderFilter, photoGenders }: Props) {
-
-  const [matchedPhotos, setMatchedPhotos] = useState<any[] | null>(null)
   const [activated, setActivated] = useState(false)
   const [gender, setGender] = useState(genderFilter)
+  const [matchedPhotos, setMatchedPhotos] = useState<any[] | null>(null)
 
-  function handleMatch(selected: string[]) {
-    const matches = getmatchp(selected, photos)
+  // Base photos filtered by gender
+  const basePhotos = gender === "mix"
+    ? photos
+    : photos.filter((_, i) => photoGenders[i] === gender)
+
+  const baseGenders = gender === "mix"
+    ? photoGenders
+    : photoGenders.filter((g) => g === gender)
+
+  // Callback for CreateNew → match
+  const handleMatch = (selected: string[]) => {
+    // Match against basePhotos + their text (use getmatchp)
+    const matches = getmatchp(selected, basePhotos)
     setMatchedPhotos(matches)
   }
 
-  const basePhotos =
-    gender === "mix"
-      ? photos
-      : photos.filter((_, i) => photoGenders[i] === gender)
-
-  const filteredPhotos = matchedPhotos ?? basePhotos
-
-  const filteredGenders =
-    gender === "mix"
-      ? photoGenders
-      : photoGenders.filter((g) => g === gender)
-
-  console.log("ClientPage photos:", photos.length)
+  // Decide which photos to display: matched or base
+  const visiblePhotos = matchedPhotos ?? basePhotos
+  const visibleGenders = matchedPhotos ? matchedPhotos.map(() => gender) : baseGenders
 
   return (
     <>
@@ -46,12 +46,11 @@ export default function ClientPage({ photos, genderFilter, photoGenders }: Props
       />
 
       <Gallery
-        photos={filteredPhotos}
-        gender={filteredGenders}
+        photos={visiblePhotos}
+        gender={visibleGenders}
         activated={activated}
         onMatch={handleMatch}
       />
     </>
   )
 }
-

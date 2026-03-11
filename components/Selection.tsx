@@ -1,21 +1,27 @@
+// Selection.tsx
 "use client"
 
-import { useState } from "react"
-import SelectCrit from "./SelectCriteria"
-import GenderToggle from "./GenderToggle"
+type GalleryPhoto = {
+  urls?: { small: string }
+  text?: string[] | string
+  [key: string]: any
+}
 
-export default function getmatchp(selected: string[], photos: any[]) {
+/**
+ * Match photos based on selected criteria.
+ * @param selected - Array of selected strings
+ * @param photos - Array of photos (with `text` property)
+ * @returns Array of photos that match any of the selected criteria
+ */
+export default function getmatchp(selected: string[], photos: GalleryPhoto[]): GalleryPhoto[] {
+  if (!selected || selected.length === 0) return photos
 
-  const photoTexts = photos.map((p) => ({
-    photo: p,
-    text: p.alt_description ?? "",
-  }))
-
-  const matches = photoTexts.filter((p) =>
-    selected.some((crit) =>
-      p.text.toLowerCase().includes(crit.toLowerCase())
+  return photos.filter((photo) => {
+    if (!photo.text) return false
+    const lines = Array.isArray(photo.text) ? photo.text : [photo.text]
+    // Return true if any selected criterion exists in the photo text
+    return selected.some((criterion) =>
+      lines.some((line) => line.toLowerCase().includes(criterion.toLowerCase()))
     )
-  )
-
-  return matches.map((m) => m.photo)
+  })
 }
