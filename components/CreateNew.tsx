@@ -3,12 +3,17 @@
 import { useState } from "react"
 import LoadPicture from "./LoadPicture"
 import SelectCrit from "@/components/SelectCriteria"
+import getmathp from "./Selection"
 
 type CreateNewProps = {
+  photos: any[]
   onCreate: (profile: { image: string; text: string[] }) => void
 }
 
 export default function CreateNew({ onCreate }: CreateNewProps) {
+
+//  const matches = getMatchp(selected, photos)
+//  console.log(matches)
 
   const [image, setImage] = useState("")
   const [text, setText] = useState<string[]>([])
@@ -17,6 +22,7 @@ export default function CreateNew({ onCreate }: CreateNewProps) {
 
     if (!image || text.length === 0) return
 
+    getmathp(selected)
     onCreate({image,text })
     setImage("")
     setText([])

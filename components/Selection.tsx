@@ -2,24 +2,21 @@
 
 import { useState } from "react"
 import SelectCrit from "./SelectCriteria"
-import choosePicture from "../lib/choosePicture"
+import GenderToggle from "./GenderToggle"
 
-export default function Page() {
+export default function getmathp(selected: string[], photos: any[]) {
+	console.log("selected",selected)
 
-  const [selected, setSelected] = useState<string[]>([])
+  const photoTexts = photos.map((p) => ({
+    photo: p,
+    text: p.alt_description ?? "",
+  }))
 
-  const handleMatch = () => {
-    const result = choosePicture(selected)
-
-      }
-
-  return (
-    <div>
-      <SelectCrit selected={selected} setSelected={setSelected} />
-
-      <button onClick={handleMatch}>
-        Find Match
-      </button>
-    </div>
+  const matches = photoTexts.filter((p) =>
+    selected.some((crit) =>
+      p.text.toLowerCase().includes(crit.toLowerCase())
+    )
   )
+
+  return matches.map((m) => m.photo)
 }
