@@ -8,27 +8,27 @@ import getmatchp from "./Selection"
 type CreateNewProps = {
   photos: any[]
   onCreate: (profile: { image: string; text: string[] }) => void
+  onMatch: (selected: string[]) => void  
 }
 
-export default function CreateNew({ photos,onCreate }: CreateNewProps) {
+export default function CreateNew({ photos,onCreate,onMatch }: CreateNewProps) {
 
   const [image, setImage] = useState("")
   const [text, setText] = useState<string[]>([])
   const [selected, setSelected] = useState<string[]>([])
+
   const handleSubmit = () => {
 
-  console.log("matches1:",photos)
-  const matches = getmatchp(selected, photos)
-  console.log("matches2:",matches)
+  if (!image || text.length === 0) return
 
-    if (!image || text.length === 0) return
+  onMatch(selected)   // send criteria upward
 
- //   getmatchp(selected)
-    onCreate({image,text })
-    setImage("")
-    setText([])
-  }
+  onCreate({ image, text })
+  setImage("")
+  setText([])
+}
 
+console.log("CreateNew photos:", photos.length)
   return (
     <div className="flex flex-row justify-center items-center gap-8 bg-sky-100/50">	  
       <SelectCrit selected={selected} setSelected={setSelected} />
@@ -45,7 +45,7 @@ export default function CreateNew({ photos,onCreate }: CreateNewProps) {
         <button
           onClick={handleSubmit}
           className="bg-black text-white px-4 py-2 rounded">
-          skapa profil
+          skapa profil och matcha mig
         </button>
       </div>
     </div>

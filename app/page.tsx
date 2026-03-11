@@ -43,7 +43,7 @@ export default async function Home({ searchParams }: Props) {
     const items = [
       ...menPhotos.map((p: any) => ({ photo: p, gender: "men" })),
       ...womenPhotos.map((p: any) => ({ photo: p, gender: "women" })),
-    ].sort(() => Math.random() - 0.5);
+    ]
 
     photos = items.map((i) => i.photo);
     photoGenders = items.map((i) => i.gender);

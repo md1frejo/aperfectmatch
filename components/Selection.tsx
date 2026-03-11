@@ -4,7 +4,7 @@ import { useState } from "react"
 import SelectCrit from "./SelectCriteria"
 import GenderToggle from "./GenderToggle"
 
-export default function getmathp(selected: string[], photos: any[]) {
+export default function getmatchp(selected: string[], photos: any[]) {
 
   const photoTexts = photos.map((p) => ({
     photo: p,

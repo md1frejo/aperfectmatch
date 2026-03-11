@@ -9,6 +9,7 @@ type Props = {
 photos: any[]
 gender: string[]
 activated: boolean
+onMatch: (selected: string[]) => void
 }
 
 type GalleryItem = {
@@ -16,7 +17,7 @@ image: string
 text: string[]
 }
 
-export default function Gallery({ photos, gender, activated }: Props) {
+export default function Gallery({ photos, gender, activated, onMatch }: Props) {
 
 const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
 const [customProfiles, setCustomProfiles] = useState<GalleryItem[]>([])
@@ -56,7 +57,7 @@ function handleKey(e: KeyboardEvent) {
   }
 
 }
-
+console.log("Gallery photos:", photos.length)
 window.addEventListener("keydown", handleKey)
 return () => window.removeEventListener("keydown", handleKey)
 }, [selectedIndex, totalImages])
@@ -66,8 +67,14 @@ return (
 
 {activated && (
   <div className="mb-8">
-    <CreateNew photos={photos} onCreate={handleCreate} />
-  </div>
+
+  <CreateNew
+  photos={photos}
+  onCreate={handleCreate}
+  onMatch={onMatch}
+/> 
+
+</div>
 )}
 
 
