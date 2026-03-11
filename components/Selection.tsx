@@ -5,7 +5,6 @@ import SelectCrit from "./SelectCriteria"
 import GenderToggle from "./GenderToggle"
 
 export default function getmathp(selected: string[], photos: any[]) {
-	console.log("selected",selected)
 
   const photoTexts = photos.map((p) => ({
     photo: p,

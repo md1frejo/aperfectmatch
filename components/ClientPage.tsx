@@ -23,6 +23,7 @@ export default function ClientPage({ photos, genderFilter, photoGenders }: Props
       <GenderToggle gender={gender} setGender={setGender} activated={activated} setActivated={setActivated}/>
 
       <Gallery photos={filteredPhotos} gender={filteredGenders} activated={activated}/>
+
     </>
   )
 }

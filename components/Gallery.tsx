@@ -66,7 +66,7 @@ return (
 
 {activated && (
   <div className="mb-8">
-    <CreateNew onCreate={handleCreate} />
+    <CreateNew photos={photos} onCreate={handleCreate} />
   </div>
 )}
 
