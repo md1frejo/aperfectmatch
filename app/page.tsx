@@ -1,6 +1,8 @@
 import ClientPage from "@/components/ClientPage";
 
-type Props = { searchParams: { gender?: string } };
+type Props = {
+  searchParams: Promise<{ gender?: string }>;
+};
 
 export default async function Home({ searchParams }: Props) {
   const gender = searchParams.gender ?? "mix";

@@ -5,9 +5,9 @@ import LoadPicture from "./LoadPicture"
 import SelectCrit from "@/components/SelectCriteria"
 
 type Props = {
-onCreate:(profile:{image:string,text:string[]})=>void
-onMatch:(selected:string[])=>void
-}
+   onCreate:(profile:{image:string,text:string[]})=>void
+    onMatch:(selected:string[])=>void
+  }
 
 export default function CreateNew({ onCreate, onMatch }: Props){
 
@@ -17,21 +17,23 @@ const [selected,setSelected]=useState<string[]>([])
 
 function handleSubmit(){
 
-console.log("submit clicked")
+console.log("image:", image)
+console.log("text:", text)
+console.log("selected CreateNew:", selected)
 
-if(!image || text.length===0){
-console.log("missing image or text")
-return
+    if(!image || text.length===0){
+      console.log("missing image or text")
+    return
+  }
+
+  onCreate({image,text})
+  onMatch(selected)
+
+  setImage("")
+  setText([])
 }
 
-onCreate({image,text})
-onMatch(selected)
-
-setImage("")
-setText([])
-}
-
-return(
+return (
 
 <div className="flex flex-row gap-6 bg-sky-100/50 p-4 rounded">
 

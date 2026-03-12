@@ -1,23 +1,28 @@
 "use client"
 
-import { useState } from "react"
+type Props = {
+  onImageChange: (img: string) => void
+}
 
-export default function LoadPicture({onImageChange,}: {
-  
-  onImageChange: (image: string) => void
-}) {
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+export default function LoadPicture({ onImageChange }: Props) {
+
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+
     const file = e.target.files?.[0]
+
     if (!file) return
 
-      const reader = new FileReader()
-        reader.onloadend = () => {
-        onImageChange(reader.result as string)
-    }
-    reader.readAsDataURL(file)
+    const url = URL.createObjectURL(file)
+
+    onImageChange(url)
   }
 
   return (
-    <input type="file" accept="image/*" onChange={handleFile} className="mb-2"/>
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleFile}
+      className="mb-2"
+    />
   )
 }
