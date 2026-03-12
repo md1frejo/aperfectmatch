@@ -24,17 +24,22 @@ export default function Gallery({ photos, gender, activated }: Props) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [touchStart, setTouchStart] = useState<number | null>(null)
 
+function handleReset() {
+  setMatchedProfiles(null)
+}
   // Create profile
   function handleCreate(profile: GalleryItem) {
     setCustomProfiles((prev) => [profile, ...prev])
   }
+function handleMatch(selected: string[]) {
 
-  // Match profiles
-  function handleMatch(selected: string[]) {
-    const matches = getmatchp(selected, allProfiles)
-    setMatchedProfiles(matches)
-  }
+  const matches = getmatchp(selected, allProfiles)
 
+  // keep the registered profile first
+  const result = [...customProfiles, ...matches]
+
+  setMatchedProfiles(result)
+}
   // API profiles
   const apiProfiles: GalleryItem[] = photos.map((photo, i) => ({
     image: photo.urls.small,
@@ -85,7 +90,18 @@ export default function Gallery({ photos, gender, activated }: Props) {
           />
         </div>
       )}
+{matchedProfiles && (
+  <div className="mb-6 flex justify-center">
 
+    <button
+      onClick={handleReset}
+      className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+    >
+      reset
+    </button>
+
+  </div>
+)}
       {/* Gallery grid */}
 
       <div className="grid grid-cols-6 gap-4">

@@ -19,7 +19,7 @@ function handleSubmit(){
 
 console.log("image:", image)
 console.log("text:", text)
-console.log("selected CreateNew:", selected)
+console.log("selected:", selected)
 
     if(!image || text.length===0){
       console.log("missing image or text")

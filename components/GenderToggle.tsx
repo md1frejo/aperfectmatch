@@ -14,12 +14,6 @@ export default function GenderToggle({ gender, setGender, activated, setActivate
   return (
     <div className="flex gap-4 mb-8">
 
-      <button
-        onClick={() => setMatchp(false)}
-        className={`px-4 py-2 rounded ${matchp ? "bg-black text-white" : "bg-zinc-200 dark:bg-zinc-700"}`}
-      >
-        matcha mig
-      </button>
 
       <button onClick={() => setActivated(!activated)} className={`px-4 py-2 rounded ${activated ? "bg-black text-white" : "bg-zinc-200 dark:bg-zinc-700"}`}>
         Registrera och matcha
