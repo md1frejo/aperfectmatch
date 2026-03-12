@@ -31,24 +31,25 @@ function handleReset() {
   function handleCreate(profile: GalleryItem) {
     setCustomProfiles((prev) => [profile, ...prev])
   }
+
 function handleMatch(selected: string[]) {
 
-  const matches = getmatchp(selected, allProfiles)
+  const matches = getmatchp(selected, apiProfiles)
 
-  // keep the registered profile first
   const result = [...customProfiles, ...matches]
 
   setMatchedProfiles(result)
 }
+
   // API profiles
   const apiProfiles: GalleryItem[] = photos.map((photo, i) => ({
     image: photo.urls.small,
     text: gdatetext(gender[i])[0],
   }))
+   const allProfiles: GalleryItem[] = [...customProfiles, ...apiProfiles]
 
-  const allProfiles: GalleryItem[] = [...customProfiles, ...apiProfiles]
-
-  const visibleProfiles = matchedProfiles ?? allProfiles
+   // default gallery = only API profiles
+   const visibleProfiles = matchedProfiles ?? apiProfiles
 
   // Keyboard navigation
   useEffect(() => {
