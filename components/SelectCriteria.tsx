@@ -1,53 +1,71 @@
 "use client"
 
-import { useState } from "react"
-import { gdatetext } from "../lib/GenerateText"
+import { gdatetext } from "@/lib/GenerateText"
 
-export default function SelectCrit() {
+type Props = {
+  selected: string[]
+  setSelected: React.Dispatch<React.SetStateAction<string[]>>
+}
 
-  const [selected, setSelected] = useState<string[]>([])
+// get attribute list
+const [, attributes] = gdatetext("men")
 
-  const toggle = (value: string) => {
-    setSelected(prev =>
-      prev.includes(value)
-        ? prev.filter(v => v !== value)
-        : [...prev, value]
-    )
+// split into 3 columns
+const columnSize = Math.ceil(attributes.length / 3)
+
+const col1 = attributes.slice(0, columnSize)
+const col2 = attributes.slice(columnSize, columnSize * 2)
+const col3 = attributes.slice(columnSize * 2)
+
+export default function SelectCriteria({ selected, setSelected }: Props) {
+
+  function toggle(value: string) {
+
+    if (selected.includes(value)) {
+      setSelected(selected.filter(v => v !== value))
+    } else {
+      setSelected([...selected, value])
+    }
+
   }
 
-  const [presentation,attributes] = gdatetext("men")
+  function renderColumn(list: string[]) {
 
-  const groups = [
-    { title: "jag är...", data: attributes[0] },
-    { title: "Jag söker ...", data: attributes[1] },
-    { title: "Jag kan ge dig ...", data: attributes[2] }
-  ]
+    return list.map((opt) => (
+
+      <label key={opt} className="flex items-center gap-2">
+
+        <input
+          type="checkbox"
+          checked={selected.includes(opt)}
+          onChange={() => toggle(opt)}
+        />
+
+        {opt}
+
+      </label>
+
+    ))
+
+  }
 
   return (
-    <div className="grid grid-cols-3 gap-8">
 
-      {groups.map((group, gIndex) => (
-        <fieldset key={gIndex}>
-          <legend className="font-semibold mb-2">{group.title}</legend>
+    <div className="accent-blue-600 grid grid-cols-3 gap-6">
 
-          {group.data.map((x: string) => {
-            const id = `${gIndex}-${x}`
+      <div className="flex flex-col gap-2">
+        {renderColumn(col1)}
+      </div>
 
-            return (
-              <div key={id}>
-                <input
-                  type="checkbox"
-                  id={id}
-                  checked={selected.includes(id)}
-                  onChange={() => toggle(id)}
-                />
-                <label htmlFor={id} className="ml-2">{x}</label>
-              </div>
-            )
-          })}
-        </fieldset>
-      ))}
+      <div className="flex flex-col gap-2">
+        {renderColumn(col2)}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        {renderColumn(col3)}
+      </div>
 
     </div>
+
   )
 }

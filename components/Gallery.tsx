@@ -4,137 +4,216 @@ import { useState, useEffect } from "react"
 import { PresentationText } from "./Presentation"
 import { gdatetext } from "@/lib/GenerateText"
 import CreateNew from "./CreateNew"
+import getmatchp from "./Selection"
 
 type Props = {
-photos: any[]
-gender: string[]
-activated: boolean
-onMatch: (selected: string[]) => void
+  photos: any[]
+  gender: string[]
+  activated: boolean
 }
 
 type GalleryItem = {
-image: string
-text: string[]
+  image: string
+  text: string[]
 }
 
-export default function Gallery({ photos, gender, activated, onMatch }: Props) {
+export default function Gallery({ photos, gender, activated }: Props) {
 
-const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
-const [customProfiles, setCustomProfiles] = useState<GalleryItem[]>([])
+  const [customProfiles, setCustomProfiles] = useState<GalleryItem[]>([])
+  const [matchedProfiles, setMatchedProfiles] = useState<GalleryItem[] | null>(null)
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+  const [touchStart, setTouchStart] = useState<number | null>(null)
 
-const handleCreate = (profile: GalleryItem) => {
-setCustomProfiles((prev) => [profile, ...prev])
+function handleReset() {
+  setMatchedProfiles(null)
+}
+  // Create profile
+  function handleCreate(profile: GalleryItem) {
+    setCustomProfiles((prev) => [profile, ...prev])
+  }
+
+function handleMatch(selected: string[]) {
+
+  const matches = getmatchp(selected, apiProfiles)
+
+  const result = [...customProfiles, ...matches]
+
+  setMatchedProfiles(result)
 }
 
-const apiProfiles: GalleryItem[] = photos.map((photo, i) => ({
-image: photo.urls.small,
-text: gdatetext(gender[i])[0],
-}))
+  // API profiles
+  const apiProfiles: GalleryItem[] = photos.map((photo, i) => ({
+    image: photo.urls.small,
+    text: gdatetext(gender[i])[0],
+  }))
+   const allProfiles: GalleryItem[] = [...customProfiles, ...apiProfiles]
 
-const allProfiles: GalleryItem[] = [...customProfiles, ...apiProfiles]
-const totalImages = allProfiles.length
+   // default gallery = only API profiles
+   const visibleProfiles = matchedProfiles ?? apiProfiles
 
-useEffect(() => {
+  // Keyboard navigation
+  useEffect(() => {
 
-function handleKey(e: KeyboardEvent) {
+    function handleKey(e: KeyboardEvent) {
 
-  if (selectedIndex === null) return
+      if (selectedIndex === null) return
 
-  if (e.key === "Escape") {
-    setSelectedIndex(null)
-  }
+      if (e.key === "Escape") setSelectedIndex(null)
 
-  if (e.key === "ArrowRight") {
-    setSelectedIndex((prev) =>
-      prev !== null ? (prev + 1) % totalImages : null
-    )
-  }
+      if (e.key === "ArrowRight") {
+        setSelectedIndex((prev) =>
+          prev !== null ? (prev + 1) % visibleProfiles.length : null
+        )
+      }
 
-  if (e.key === "ArrowLeft") {
-    setSelectedIndex((prev) =>
-      prev !== null ? (prev - 1 + totalImages) % totalImages : null
-    )
-  }
+      if (e.key === "ArrowLeft") {
+        setSelectedIndex((prev) =>
+          prev !== null
+            ? (prev - 1 + visibleProfiles.length) % visibleProfiles.length
+            : null
+        )
+      }
+    }
 
-}
-console.log("Gallery photos:", photos.length)
-window.addEventListener("keydown", handleKey)
-return () => window.removeEventListener("keydown", handleKey)
-}, [selectedIndex, totalImages])
+    window.addEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKey)
 
-return (
-<>
+  }, [selectedIndex, visibleProfiles.length])
 
-{activated && (
-  <div className="mb-8">
+  return (
+    <>
 
-  <CreateNew
-  photos={photos}
-  onCreate={handleCreate}
-  onMatch={onMatch}
-/> 
+      {activated && (
+        <div className="mb-8">
+          <CreateNew
+            onCreate={handleCreate}
+            onMatch={handleMatch}
+          />
+        </div>
+      )}
+{matchedProfiles && (
+  <div className="mb-6 flex justify-center">
 
-</div>
-)}
-
-
-  <div className="grid grid-cols-6 gap-4">
-
-    {allProfiles.map((profile, index) => (
-      <div key={index} className="flex flex-col w-full">
-
-        <img
-          src={profile.image}
-          className="rounded cursor-pointer hover:scale-105 transition"
-          onClick={() => setSelectedIndex(index)}
-        />
-
-        <PresentationText text={profile.text} />
-
-      </div>
-    ))}
+    <button
+      onClick={handleReset}
+      className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+    >
+      reset
+    </button>
 
   </div>
+)}
+      {/* Gallery grid */}
 
-  {selectedIndex !== null && (
-    <div
-      className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50"
-      onClick={() => setSelectedIndex(null)}
-    >
+      <div className="grid grid-cols-6 gap-4">
 
-      <img
-        src={allProfiles[selectedIndex].image}
-        className="max-w-[90%] max-h-[70%] rounded-lg"
-        onClick={(e) => e.stopPropagation()}
-      />
+        {visibleProfiles.map((profile, index) => (
 
-      <div className="bg-gray-800 text-white p-4 rounded mt-4 max-w-md text-center">
-        <PresentationText text={allProfiles[selectedIndex].text} />
+          <div key={index} className="flex flex-col">
+
+            <img
+              src={profile.image}
+              className="rounded cursor-pointer hover:scale-105 transition"
+              onClick={() => setSelectedIndex(index)}
+            />
+
+            <PresentationText text={profile.text} />
+
+          </div>
+
+        ))}
+
       </div>
 
-      <button
-        className="absolute left-6 text-white text-4xl"
-        onClick={(e) => {
-          e.stopPropagation()
-          setSelectedIndex((selectedIndex - 1 + totalImages) % totalImages)
-        }}
-      >
-        ←
-      </button>
+      {/* Lightbox viewer */}
 
-      <button
-        className="absolute right-6 text-white text-4xl"
-        onClick={(e) => {
-          e.stopPropagation()
-          setSelectedIndex((selectedIndex + 1) % totalImages)
-        }}
-      >
-        →
-      </button>
+      {selectedIndex !== null && (
 
-    </div>
-  )}
+        <div
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={() => setSelectedIndex(null)}
+        >
 
-</>
-)
+          <div
+            className="relative flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+
+            <img
+              src={visibleProfiles[selectedIndex].image}
+              className="max-w-[90vw] max-h-[70vh] rounded-xl shadow-2xl"
+              onTouchStart={(e) =>
+                setTouchStart(e.touches[0].clientX)
+              }
+              onTouchEnd={(e) => {
+
+                if (!touchStart) return
+
+                const touchEnd = e.changedTouches[0].clientX
+                const diff = touchStart - touchEnd
+
+                if (diff > 50) {
+                  setSelectedIndex(
+                    (selectedIndex + 1) % visibleProfiles.length
+                  )
+                }
+
+                if (diff < -50) {
+                  setSelectedIndex(
+                    (selectedIndex - 1 + visibleProfiles.length) %
+                      visibleProfiles.length
+                  )
+                }
+
+              }}
+            />
+
+            <div className="bg-gray-900 text-white p-4 rounded-lg mt-4 max-w-md text-center">
+              <PresentationText text={visibleProfiles[selectedIndex].text} />
+            </div>
+
+            {/* Left arrow */}
+
+            <button
+              className="absolute left-[-70px] text-white text-5xl hover:scale-125 transition"
+              onClick={() =>
+                setSelectedIndex(
+                  (selectedIndex - 1 + visibleProfiles.length) %
+                    visibleProfiles.length
+                )
+              }
+            >
+              ←
+            </button>
+
+            {/* Right arrow */}
+
+            <button
+              className="absolute right-[-70px] text-white text-5xl hover:scale-125 transition"
+              onClick={() =>
+                setSelectedIndex(
+                  (selectedIndex + 1) % visibleProfiles.length
+                )
+              }
+            >
+              →
+            </button>
+
+            {/* Close button */}
+
+            <button
+              className="absolute top-[-50px] right-0 text-white text-3xl"
+              onClick={() => setSelectedIndex(null)}
+            >
+              ✕
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </>
+  )
 }

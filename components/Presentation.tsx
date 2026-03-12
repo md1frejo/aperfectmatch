@@ -12,7 +12,6 @@ export function PresentationText({ text }: Props) {
     lines = text.filter((v): v is string => typeof v === "string")
   }
 
-  console.log("PresentationText text:", text)
   return (
     <div className="bg-sky-200/50">
       {lines.map((line, i) => (

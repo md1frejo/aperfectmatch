@@ -1,21 +1,16 @@
-"use client"
+export default function getmatchp(selected:string[],profiles:any[]){
 
-import { useState } from "react"
-import SelectCrit from "./SelectCriteria"
-import GenderToggle from "./GenderToggle"
+if(selected.length===0) return profiles
 
-export default function getmatchp(selected: string[], photos: any[]) {
+return profiles.filter((profile)=>
 
-  const photoTexts = photos.map((p) => ({
-    photo: p,
-    text: p.alt_description ?? "",
-  }))
+selected.some((crit)=>
 
-  const matches = photoTexts.filter((p) =>
-    selected.some((crit) =>
-      p.text.toLowerCase().includes(crit.toLowerCase())
-    )
-  )
+profile.text?.some((line:string)=>
+line.toLowerCase().includes(crit.toLowerCase())
+)
 
-  return matches.map((m) => m.photo)
+)
+
+)
 }
