@@ -31,12 +31,11 @@ function handleReset() {
   function handleCreate(profile: GalleryItem) {
     setCustomProfiles((prev) => [profile, ...prev])
   }
-
-function handleMatch(selected: string[]) {
+function handleMatch(selected: string[], newProfile: GalleryItem) {
 
   const matches = getmatchp(selected, apiProfiles)
 
-  const result = [...customProfiles, ...matches]
+  const result = [newProfile, ...matches]
 
   setMatchedProfiles(result)
 }
@@ -109,7 +108,7 @@ const apiProfiles: GalleryItem[] = useMemo(() => {
 
         {visibleProfiles.map((profile, index) => (
 
-          <div key={index} className="flex flex-col">
+          <div key={profile.image} className="flex flex-col">
 
             <img
               src={profile.image}

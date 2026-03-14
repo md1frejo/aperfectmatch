@@ -6,7 +6,10 @@ import SelectCrit from "@/components/SelectCriteria"
 
 type Props = {
   onCreate:(profile:{image:string,text:string[]})=>void
-  onMatch:(selected:string[])=>void
+
+onMatch:(selected:string[], profile:{image:string,text:string[]})=>void
+
+
 }
 
 export default function CreateNew({ onCreate, onMatch }: Props){
@@ -22,8 +25,10 @@ function handleSubmit(){
     return
   }
 
-  onCreate({image,text})
-  onMatch(selected)
+  const profile = { image, text }
+
+ onCreate(profile)
+ onMatch(selected, profile)
 
   setImage("")
   setText([])
@@ -78,3 +83,15 @@ bg-gradient-to-br from-white/60 to-pink-100/50 backdrop-blur-md shadow-xl border
 
 )
 }
+
+
+
+-- click button
+-- ↓
+-- create profile object
+-- ↓
+-- pass profile to onMatch
+-- ↓
+-- match result includes it immediately
+-- ↓
+-- state updates later (doesn't matter)
