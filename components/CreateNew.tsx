@@ -5,9 +5,9 @@ import LoadPicture from "./LoadPicture"
 import SelectCrit from "@/components/SelectCriteria"
 
 type Props = {
-   onCreate:(profile:{image:string,text:string[]})=>void
-    onMatch:(selected:string[])=>void
-  }
+  onCreate:(profile:{image:string,text:string[]})=>void
+  onMatch:(selected:string[])=>void
+}
 
 export default function CreateNew({ onCreate, onMatch }: Props){
 
@@ -17,12 +17,8 @@ const [selected,setSelected]=useState<string[]>([])
 
 function handleSubmit(){
 
-console.log("image:", image)
-console.log("text:", text)
-console.log("selected:", selected)
-
-    if(!image || text.length===0){
-      console.log("missing image or text")
+  if(!image || text.length===0){
+    console.log("missing image or text")
     return
   }
 
@@ -35,32 +31,50 @@ console.log("selected:", selected)
 
 return (
 
-<div className="flex flex-row gap-6 bg-sky-100/50 p-4 rounded">
+<div className="flex justify-center">
 
-<SelectCrit selected={selected} setSelected={setSelected}/>
+  <div className="
+    flex flex-row gap-6
+    w-1/2
+    p-6
+    rounded-xl
+bg-gradient-to-br from-white/60 to-pink-100/50 backdrop-blur-md shadow-xl border border-white/40
+  ">
 
-<div className="w-96">
+    <SelectCrit selected={selected} setSelected={setSelected}/>
 
-<LoadPicture onImageChange={setImage}/>
+    <div className="w-80 space-y-3">
 
-<textarea
-placeholder="berätta om dig själv ..."
-value={text.join("\n")}
-onChange={(e)=>setText(e.target.value.split("\n"))}
-className="w-full p-2 border rounded mb-2"
-/>
+      <LoadPicture onImageChange={setImage}/>
 
-<button
-onClick={handleSubmit}
-className="bg-black text-white px-4 py-2 rounded"
->
+      <textarea
+        placeholder="berätta om dig själv ..."
+        value={text.join("\n")}
+        onChange={(e)=>setText(e.target.value.split("\n"))}
+        className="
+          w-full
+          p-3
+          border
+          border-zinc-300
+          rounded-lg
+          text-sm
+          focus:outline-none
+          focus:ring-2
+          focus:ring-pink-400
+        "
+      />
 
-skapa profil och matcha mig
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-gradient-to-r from-blue-500 to-sky-500 text-white px-4 py-2 rounded-lg hover:from-pink-600 hover:to-rose-600 transition">
+        skapa profil och matcha mig
+      </button>
 
-</button>
+    </div>
+
+  </div>
 
 </div>
 
-</div>
 )
 }

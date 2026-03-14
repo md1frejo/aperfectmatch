@@ -41,7 +41,6 @@ function handleMatch(selected: string[]) {
   setMatchedProfiles(result)
 }
 
-  // API profiles
   const apiProfiles: GalleryItem[] = photos.map((photo, i) => ({
     image: photo.urls.small,
     text: gdatetext(gender[i])[0],

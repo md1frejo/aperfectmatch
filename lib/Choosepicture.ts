@@ -2,11 +2,8 @@ type Photo = {
   id: string
   urls: { small: string }
 }
-
-export default function selection(
-  photos: Photo[],
-  selected: string[]
-) {
+// main algorithm
+export default function selection(photos: Photo[],selected: string[]) {
 
   if (!photos.length) return null
 
@@ -16,8 +13,7 @@ export default function selection(
   for (const photo of photos) {
 
     let score = 0
-
-    // example scoring logic
+    console.log("choosepicture ",photo.alt_description)
     for (const s of selected) {
       if (photo.alt_description?.includes(s)) {
         score++
