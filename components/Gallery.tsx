@@ -5,7 +5,7 @@ import { PresentationText } from "./Presentation"
 import { gdatetext } from "@/lib/GenerateText"
 import CreateNew from "./CreateNew"
 import getmatchp from "./Selection"
-
+import { useMemo } from "react"
 type Props = {
   photos: any[]
   gender: string[]
@@ -40,11 +40,12 @@ function handleMatch(selected: string[]) {
 
   setMatchedProfiles(result)
 }
-
-  const apiProfiles: GalleryItem[] = photos.map((photo, i) => ({
+const apiProfiles: GalleryItem[] = useMemo(() => {
+  return photos.map((photo, i) => ({
     image: photo.urls.small,
     text: gdatetext(gender[i])[0],
   }))
+}, [photos, gender])
    const allProfiles: GalleryItem[] = [...customProfiles, ...apiProfiles]
 
    // default gallery = only API profiles
@@ -95,7 +96,7 @@ function handleMatch(selected: string[]) {
 
     <button
       onClick={handleReset}
-      className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+      className="bg-sky-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
     >
       reset
     </button>
@@ -128,10 +129,7 @@ function handleMatch(selected: string[]) {
 
       {selectedIndex !== null && (
 
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={() => setSelectedIndex(null)}
-        >
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setSelectedIndex(null)}>
 
           <div
             className="relative flex flex-col items-center"
