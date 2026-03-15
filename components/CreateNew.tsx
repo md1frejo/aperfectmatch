@@ -6,8 +6,7 @@ import SelectCrit from "@/components/SelectCriteria"
 
 type Props = {
   onCreate:(profile:{image:string,text:string[]})=>void
-
-onMatch:(selected:string[], profile:{image:string,text:string[]})=>void
+  onMatch:(selected:string[], profile:{image:string,text:string[]})=>void
 
 
 }
@@ -86,12 +85,3 @@ bg-gradient-to-br from-white/60 to-pink-100/50 backdrop-blur-md shadow-xl border
 
 
 
--- click button
--- ↓
--- create profile object
--- ↓
--- pass profile to onMatch
--- ↓
--- match result includes it immediately
--- ↓
--- state updates later (doesn't matter)
