@@ -54,14 +54,17 @@ export default function SelectCriteria({ selected, setSelected }: Props) {
     <div className="accent-blue-600 grid grid-cols-3 gap-6">
 
       <div className="flex flex-col gap-2">
+      <h1>jag är:</h1>
         {renderColumn(col1)}
       </div>
 
       <div className="flex flex-col gap-2">
+      <h1>jag söker:</h1>
         {renderColumn(col2)}
       </div>
 
       <div className="flex flex-col gap-2">
+      <h1>jag ger dig:</h1>
         {renderColumn(col3)}
       </div>
 
